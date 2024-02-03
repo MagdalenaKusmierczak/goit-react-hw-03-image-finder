@@ -11,14 +11,11 @@ const baseURL = 'https://pixabay.com/api/?key=';
 
 export class App extends Component {
   state = {
-    photos: [
-      {
-        id: '',
-        tags: '',
-        webformatURL: '',
-        largeImageURL: '',
-      },
-    ],
+    images: [],
+    id: '',
+    tags: '',
+    webformatURL: '',
+    largeImageURL: '',
     filter: '',
     activePage: 1,
     error: null,
@@ -39,7 +36,7 @@ export class App extends Component {
         <ImageGallery>
           <ImageGalleryItem />
         </ImageGallery>
-        <Button />
+        <Button onClick />
       </div>
     );
   }
