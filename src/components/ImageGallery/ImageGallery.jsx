@@ -1,3 +1,10 @@
-<ul class="gallery">
-  <!-- Zbiór <li> z obrazami -->
-</ul>
+// import PropTypes from 'prop-types';
+
+const ImageGallery = ({ children }) => {
+  return <ul className="ImageGallery">{children}</ul>;
+};
+
+// ImageGallery.propTypes = {
+//   children: PropTypes.element,
+// };
+export default ImageGallery;

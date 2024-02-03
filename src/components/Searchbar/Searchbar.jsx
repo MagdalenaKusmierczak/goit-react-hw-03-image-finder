@@ -1,15 +1,26 @@
-<header class="searchbar">
-  <form class="form">
-    <button type="submit" class="button">
-      <span class="button-label">Search</span>
-    </button>
+// import PropTypes from 'prop-types';
 
-    <input
-      class="input"
-      type="text"
-      autocomplete="off"
-      autofocus
-      placeholder="Search images and photos"
-    />
-  </form>
-</header>;
+const Searchbar = () => {
+  return (
+    <header className="Searchbar">
+      <form className="SearchForm ">
+        <button type="submit" className="SearchForm-button">
+          <span className="SearchForm-button-label">Search</span>
+        </button>
+
+        <input
+          className="SearchForm-input"
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+        />
+      </form>
+    </header>
+  );
+};
+
+// Searchbar.propTypes = {
+//   children: PropTypes.string.isRequired,
+// };
+export default Searchbar;
