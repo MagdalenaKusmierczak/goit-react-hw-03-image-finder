@@ -12,7 +12,6 @@ const baseURL = 'https://pixabay.com/api/?key=';
 export class App extends Component {
   state = {
     images: [],
-    filter: '',
     activePage: 1,
     error: null,
     isLoading: false,
