@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Searchbar from './Searchbar/Searchbar';
+import ImageGallery from './ImageGallery/ImageGallery';
+import Button from './Button/Button';
+import Loader from './Loader/Loader';
 
 export class App extends Component {
   state = {
     input: '',
-    search: '',
     images: [],
     currentPage: 1,
     error: null,
@@ -34,21 +37,14 @@ export class App extends Component {
     }));
   };
   //Submit search
-  handleSubmit = evt => {
-    evt.preventDefault();
-    const { search } = this.state;
-    const trimInput = search.trim();
+  handleSubmit = trimInput => {
     this.setState({
       input: trimInput,
       images: [],
       currentPage: 1,
     });
-    evt.target.reset();
   };
 
-  handleInput = evt => {
-    this.setState({ search: evt.target.value });
-  };
   //Generates gallery
   addImages = async () => {
     const { input, currentPage } = this.state;
@@ -63,8 +59,6 @@ export class App extends Component {
 
       this.setState(state => ({
         images: [...state.images, ...normalizedImages],
-        isLoading: false,
-        error: '',
         totalPages: Math.ceil(data.totalHits / 12),
       }));
     } catch (error) {
@@ -84,43 +78,15 @@ export class App extends Component {
   }
   // Searchbar
   render() {
-    const { images, search} = this.state;
+    const { images, isLoading, currentPage, totalPages } = this.state;
     return (
       <div className="App">
-        <header className="searchbar">
-          <form className="form" onSubmit={this.handleSubmit}>
-            <button type="submit" className="button">
-              <span className="button-label">Search</span>
-            </button>
-
-            <input
-              className="input"
-              name="input"
-              id="search"
-              type="text"
-              autoComplete="off"
-              autoFocus
-              placeholder="Search images and photos"
-              onChange={this.handleInput}
-              value={search}
-            />
-          </form>
-        </header>
-        <ul className="gallery">
-          {images.map(image => (
-            <li className="gallery-item" key={image.id}>
-              <img src={image.webformatURL} alt={image.tags} />
-            </li>
-          ))}
-        </ul>
-        <button className="button" onClick={this.loadMore}>
-          Load more
-        </button>
-        <div className="overlay">
-          <div className="modal">
-            <img src="" alt="" />
-          </div>
-        </div>
+        <Searchbar onSubmit={this.handleSubmit} />
+        {images.length > 0 ? <ImageGallery images={images} /> : ''}
+        {/* {isLoading && <Loader />} */}
+        {images.length > 0 && totalPages !== currentPage && !isLoading && (
+          <Button onClick={this.loadMore} />
+        )}
       </div>
     );
   }

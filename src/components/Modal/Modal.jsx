@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+    document.body.style.overflow = 'hidden';
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
+    document.body.style.overflow = 'visible';
   }
 
   handleKeyDown = event => {
@@ -23,12 +25,12 @@ class Modal extends Component {
   };
 
   render() {
-    const { image } = this.props;
+    const { largeImageURL, tags } = this.props;
 
     return (
       <div className="Overlay" onClick={this.handleClick}>
         <div className="Modal">
-          <img src={image.largeImageURL} alt={image.tags} />
+          <img src={largeImageURL} alt={tags} />
         </div>
       </div>
     );
@@ -36,10 +38,9 @@ class Modal extends Component {
 }
 
 Modal.propTypes = {
-  image: PropTypes.shape({
-    largeImageURL: PropTypes.string.isRequired,
-  }).isRequired,
-  onClose: PropTypes.func.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default Modal;

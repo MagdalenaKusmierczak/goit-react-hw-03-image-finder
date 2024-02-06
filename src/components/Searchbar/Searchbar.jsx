@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class Searchbar extends Component {
+class Searchbar extends Component {
   state = {
-    searchInput: '',
+    input: '',
+    search: '',
   };
-  handleChange = evt => {
-    this.setState({ searchInput: evt.currentTarget.value.toLowerCase() });
+  handleInput = evt => {
+    this.setState({ search: evt.target.value });
   };
   handleSubmit = evt => {
     evt.preventDefault();
-    if (this.state.searchInput.trim() === '') {
-      alert('Please enter something');
-      return;
-    }
-    this.props.onSubmit(this.state.searchInput);
-    this.setState({ searchInput: '' });
+    const trimInput = evt.target.elements.input.value.trim();
+    this.props.onSubmit(trimInput);
+    evt.target.reset();
   };
+
   render() {
     return (
       <header className="Searchbar">
@@ -26,10 +25,10 @@ export default class Searchbar extends Component {
             type="text"
             autoComplete="off"
             autoFocus
-            name="filter"
+            name="input"
             placeholder="Search images and photos"
-            value={this.state.searchInput}
-            onChange={this.handleChange}
+            value={this.state.search}
+            onChange={this.handleInput}
           />
           <button type="submit" className="SearchForm-button">
             <span className="SearchForm-button-label">Search</span>
@@ -42,3 +41,4 @@ export default class Searchbar extends Component {
 Searchbar.propTypes = {
   onSubmit: PropTypes.func,
 };
+export default Searchbar;
