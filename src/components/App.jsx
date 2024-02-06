@@ -45,7 +45,7 @@ export class App extends Component {
     });
   };
 
-  //Generates gallery
+  //Generates data
   addImages = async () => {
     const { input, currentPage } = this.state;
     try {
@@ -60,6 +60,8 @@ export class App extends Component {
       this.setState(state => ({
         images: [...state.images, ...normalizedImages],
         totalPages: Math.ceil(data.totalHits / 12),
+        isLoading: false,
+        error: '',
       }));
     } catch (error) {
       this.setState({ error: 'Something went wrong!' });
@@ -82,7 +84,7 @@ export class App extends Component {
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleSubmit} />
-        {images.length > 0 ? <ImageGallery images={images} /> : ''}
+        {images.length > 0 ? <ImageGallery images={images} /> : <p></p>}
         {isLoading && <Loader />}
         {images.length > 0 && totalPages !== currentPage && !isLoading && (
           <Button onClick={this.loadMore} />
