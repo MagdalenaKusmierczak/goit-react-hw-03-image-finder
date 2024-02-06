@@ -83,7 +83,7 @@ export class App extends Component {
       <div className="App">
         <Searchbar onSubmit={this.handleSubmit} />
         {images.length > 0 ? <ImageGallery images={images} /> : ''}
-        {/* {isLoading && <Loader />} */}
+        {isLoading && <Loader />}
         {images.length > 0 && totalPages !== currentPage && !isLoading && (
           <Button onClick={this.loadMore} />
         )}
