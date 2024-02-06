@@ -4,13 +4,14 @@ import axios from 'axios';
 export class App extends Component {
   state = {
     input: '',
+    search: '',
     images: [],
     currentPage: 1,
     error: null,
     isLoading: false,
     totalPages: 0,
   };
-
+  //API call
   fetchImages = async (input, currentPage) => {
     const API_KEY = '35262306-2ee6f92f6616bfcf6c7291f6d';
     axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -26,20 +27,29 @@ export class App extends Component {
       return { id, tags, webformatURL, largeImageURL };
     });
 
+  //Load more button
   loadMore = () => {
     this.setState(prevState => ({
       currentPage: prevState.currentPage + 1,
     }));
   };
-
-  handleSubmit = input => {
+  //Submit search
+  handleSubmit = evt => {
+    evt.preventDefault();
+    const { search } = this.state;
+    const trimInput = search.trim();
     this.setState({
-      input: input,
+      input: trimInput,
       images: [],
       currentPage: 1,
     });
+    evt.target.reset();
   };
 
+  handleInput = evt => {
+    this.setState({ search: evt.target.value });
+  };
+  //Generates gallery
   addImages = async () => {
     const { input, currentPage } = this.state;
     try {
@@ -72,23 +82,27 @@ export class App extends Component {
       this.addImages();
     }
   }
-
+  // Searchbar
   render() {
-    const { images } = this.state;
+    const { images, search} = this.state;
     return (
       <div className="App">
         <header className="searchbar">
-          <form className="form">
+          <form className="form" onSubmit={this.handleSubmit}>
             <button type="submit" className="button">
               <span className="button-label">Search</span>
             </button>
 
             <input
               className="input"
+              name="input"
+              id="search"
               type="text"
               autoComplete="off"
               autoFocus
               placeholder="Search images and photos"
+              onChange={this.handleInput}
+              value={search}
             />
           </form>
         </header>
