@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, imageClick }) => {
   return (
     <ul className="ImageGallery">
       {images.map(image => (
-        <ImageGalleryItem key={image.id} image={image} />
+        <ImageGalleryItem onClick={imageClick} key={image.id} image={image} />
       ))}
     </ul>
   );

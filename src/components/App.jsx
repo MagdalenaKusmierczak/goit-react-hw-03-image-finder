@@ -4,6 +4,7 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import MoreButton from './Button/Button';
 import Loader from './Loader/Loader';
+import Modal from './Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -13,6 +14,9 @@ export class App extends Component {
     error: null,
     isLoading: false,
     totalPages: 0,
+    isModalOpen: false,
+    modalImage: '',
+    modalTags: '',
   };
   //API call
   fetchImages = async (inputValue, currentPage) => {
@@ -78,16 +82,66 @@ export class App extends Component {
       this.addImages();
     }
   }
+  //Modal
+  handleClose = evt => {
+    this.setState({
+      isModalOpen: false,
+      modalImage: '',
+      modalTags: '',
+    });
+  };
+  onClose = evt => {
+    if (evt.target === evt.currentTarget) {
+      this.handleClose();
+    }
+  };
+  handleClick = evt => {
+    this.setState({
+      isModalOpen: true,
+      modalTags: evt.target.alt,
+      modalImage: evt.target.name,
+    });
+  };
+  async componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+  async componentWillUnmount() {
+    window.removeEventListener('keydown', this.onClose);
+  }
+
+  handleKeyDown = evt => {
+    if (evt.code === 'Escape') {
+      this.handleClose();
+    }
+  };
+
   render() {
-    const { images, isLoading, totalPages, currentPage } = this.state;
+    const {
+      images,
+      isLoading,
+      totalPages,
+      currentPage,
+      isModalOpen,
+      modalImage,
+      modalTags,
+    } = this.state;
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleSubmit} />
-        {images.length > 0 && <ImageGallery images={images} />}
+        {images.length > 0 && (
+          <ImageGallery imageClick={this.handleClick} images={images} />
+        )}
         {isLoading && <Loader />}
         {images.length > 0 && totalPages !== currentPage && (
           <MoreButton onClick={this.loadMore} />
         )}
+        {isModalOpen ? (
+          <Modal
+            largeImageURL={modalImage}
+            tags={modalTags}
+            onClose={this.onClose}
+          />
+        ) : null}
       </div>
     );
   }

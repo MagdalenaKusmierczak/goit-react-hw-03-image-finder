@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 
-const ImageGalleryItem = ({ image }) => {
+const ImageGalleryItem = ({ image, onClick }) => {
   return (
     <>
-      <li className="ImageGalleryItem ">
+      <li className="ImageGalleryItem " id={image.id} onClick={onClick}>
         <img
           className="ImageGalleryItem-image"
           src={image.webformatURL}
           alt={image.tags}
-          // onClick={this.toggleModal}
+          name={image.largeImageURL}
         />
       </li>
     </>
@@ -21,6 +21,7 @@ ImageGalleryItem.propTypes = {
     tags: PropTypes.string.isRequired,
     largeImageURL: PropTypes.string.isRequired,
   }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ImageGalleryItem;
