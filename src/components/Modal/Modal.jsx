@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
+
+const modalRoot = document.querySelector('#modal-root');
 
 class Modal extends Component {
   componentDidMount() {
@@ -12,27 +15,34 @@ class Modal extends Component {
     document.body.style.overflow = 'visible';
   }
 
-  handleKeyDown = event => {
-    if (event.code === 'Escape') {
-      this.props.closeModal();
+  handleKeyDown = evt => {
+    if (evt.code === 'Escape') {
+      this.props.onClose();
     }
   };
 
-  handleClick = event => {
-    if (event.target === event.currentTarget) {
-      this.props.closeModal();
+  handleClick = evt => {
+    if (evt.target === evt.currentTarget) {
+      this.props.onClose();
     }
   };
-
+  handleBackdrop = evt => {
+    if (evt.currentTarget === evt.target) {
+      this.props.onClose();
+    }
+  };
   render() {
     const { largeImageURL, tags } = this.props;
 
     return (
-      <div className="Overlay" onClick={this.handleClick}>
-        <div className="Modal">
-          <img src={largeImageURL} alt={tags} />
+      createPortal(
+        <div className="Overlay" onClick={this.handleBackdrop}>
+          <div className="Modal">
+            <img src={largeImageURL} alt={tags} />
+          </div>
         </div>
-      </div>
+      ),
+      modalRoot
     );
   }
 }

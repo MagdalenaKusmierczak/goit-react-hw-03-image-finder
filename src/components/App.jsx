@@ -37,9 +37,9 @@ export class App extends Component {
     }));
   };
   //Submit search
-  handleSubmit = trimInput => {
+  handleSubmit = input => {
     this.setState({
-      input: trimInput,
+      input: input,
       images: [],
       currentPage: 1,
     });
@@ -67,6 +67,7 @@ export class App extends Component {
       this.setState({ error: 'Something went wrong!' });
     } finally {
       this.setState({ isLoading: false });
+      console.log('addImages!');
     }
   };
 
@@ -76,17 +77,17 @@ export class App extends Component {
       prevState.currentPage !== this.state.currentPage
     ) {
       this.addImages();
+      console.log('images added');
     }
   }
-  // Searchbar
   render() {
     const { images, isLoading, currentPage, totalPages } = this.state;
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleSubmit} />
-        {images.length > 0 ? <ImageGallery images={images} /> : <p>Nothiing</p>}
+        {images.length > 0 && <ImageGallery images={images} />}
         {isLoading && <Loader />}
-        {images.length > 0 && totalPages !== currentPage && !isLoading && (
+        {images.length > 0 && totalPages !== currentPage && (
           <Button onClick={this.loadMore} />
         )}
       </div>

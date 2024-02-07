@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
   state = {
-    input: '',
+    inputValue: '',
     search: '',
   };
   handleInput = evt => {
@@ -11,7 +11,7 @@ class Searchbar extends Component {
   };
   handleSubmit = evt => {
     evt.preventDefault();
-    const trimInput = evt.target.elements.input.value.trim();
+    const trimInput = evt.target.elements.inputValue.value.trim();
     this.props.onSubmit(trimInput);
     evt.target.reset();
   };
@@ -25,7 +25,8 @@ class Searchbar extends Component {
             type="text"
             autoComplete="off"
             autoFocus
-            name="input"
+            name="inputValue"
+            id="search"
             placeholder="Search images and photos"
             value={this.state.search}
             onChange={this.handleInput}
